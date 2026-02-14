@@ -45,15 +45,10 @@ app.post("/parse", (req:Request, res:Response) => {
 // [TASK 1] ====================================================================
 // Takes in a recipeName and returns it in a form that 
 const parse_handwriting = (recipeName: string): string | null => {
-  let name = recipeName;
-
-  name = name.replaceAll(/-_/gi, ' ');
-  name = name.replaceAll(/^a-z /i, '');
+  let name = recipeName.replace(/[-_]+/g, ' ').replace(/[^a-z\s]/gi, '');
   
   let words = name.trim().split(/\s+/g);
-  for (let word of words) {
-    word = word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase();
-  }
+  words = words.map(w => w.slice(0, 1).toUpperCase() + w.slice(1).toLowerCase());
   name = words.join(' ');
 
   return name.length > 0 ? name : null;
@@ -109,7 +104,7 @@ const addEntry = (type: string, name: string, requiredItems: requiredItem[] = []
 // [TASK 3] ====================================================================
 // Endpoint that returns a summary of a recipe that corresponds to a query name
 app.get("/summary", (req:Request, res:Request) => {
-  const name = res.query.name as string;
+  const name = req.query.name as string;
 
   try {
     res.json(summariseRecipe(name));
