@@ -109,10 +109,37 @@ const addEntry = (type: string, name: string, requiredItems: requiredItem[] = []
 // [TASK 3] ====================================================================
 // Endpoint that returns a summary of a recipe that corresponds to a query name
 app.get("/summary", (req:Request, res:Request) => {
-  // TODO: implement me
-  res.status(500).send("not yet implemented!")
+  const name = res.query.name as string;
 
+  try {
+    res.json(summariseRecipe(name));
+  } catch(err) {
+    console.log(err.message);
+    res.status(400).json({});
+  }
 });
+
+const summariseRecipe = (name: string) => {
+  const result = { name, cookTime: 0, ingredients: [] as requiredItem[] };
+
+  const addToSummary = (name: string, quantity: number, first: boolean = false) => {
+    const entry = cookbook.find(e => e.name === name);
+    if (entry === undefined) {
+      throw new Error("Recipe or ingredient not in the cookbook.");
+    }
+
+    if ("cookTime" in entry) {
+      if (first) throw new Error("searched name is NOT a recipe name");
+      result.ingredients.push({ name, quantity });
+      result.cookTime += entry.cookTime * quantity;
+    } else {
+      entry.requiredItems.forEach(i => addToSummary(i.name, i.quantity * quantity));
+    }
+  }
+
+  addToSummary(name, 1, true);
+  return result;
+}
 
 // =============================================================================
 // ==== DO NOT TOUCH ===========================================================
