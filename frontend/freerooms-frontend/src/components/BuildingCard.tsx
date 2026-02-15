@@ -6,7 +6,7 @@ export const BuildingCard = (props: { name: string, availability: number, image:
                 <div className="rounded-full bg-green-600 h-2 w-2"></div>
                 {props.availability} rooms available
             </div>
-            <div className="rounded-xl bg-orange-400 text-white font-bold absolute bottom-3 inset-x-3 text-left p-3">
+            <div className="rounded-xl bg-theme text-white font-semibold absolute bottom-3 inset-x-3 text-left p-4">
                 {props.name}
             </div>
         </button>
