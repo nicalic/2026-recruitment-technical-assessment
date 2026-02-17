@@ -23,6 +23,19 @@ public class BuildingLoader {
     }
     
     public func fetchBuildings() async -> Result  {
-        fatalError("TODO")
+        let result = await client.get(from: url)
+
+        switch result {
+        case .success(let (data, response)):
+
+            if response.statusCode != 200 {
+                return .failure(Error.invalidData)
+            }
+
+            let building = [Building]()
+            return .success(building)
+        case .failure:
+            return .failure(Error.connectivity)
+        }
     }
 }
