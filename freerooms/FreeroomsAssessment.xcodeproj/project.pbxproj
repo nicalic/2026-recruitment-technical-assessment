@@ -22,6 +22,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A36A9882F4470F100F5E5D4 /* Freerooms Mobile.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Freerooms Mobile.xcodeproj"; path = "Freerooms Mobile/Freerooms Mobile.xcodeproj"; sourceTree = "<group>"; };
 		963EE1CB2D548F2F00E7FAAC /* FreeroomsAssessment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FreeroomsAssessment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		963EE1D62D548F7000E7FAAC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		967816F82D549C2B0084AE33 /* FreeroomsAssessmentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FreeroomsAssessmentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,9 +73,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A36A9892F4470F100F5E5D4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		963EE1C12D548F2F00E7FAAC = {
 			isa = PBXGroup;
 			children = (
+				3A36A9882F4470F100F5E5D4 /* Freerooms Mobile.xcodeproj */,
 				963EE1D62D548F7000E7FAAC /* README.md */,
 				963EE1CD2D548F2F00E7FAAC /* FreeroomsAssessment */,
 				967816F92D549C2B0084AE33 /* FreeroomsAssessmentTests */,
@@ -181,6 +190,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 963EE1CC2D548F2F00E7FAAC /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3A36A9892F4470F100F5E5D4 /* Products */;
+					ProjectRef = 3A36A9882F4470F100F5E5D4 /* Freerooms Mobile.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				963EE1CA2D548F2F00E7FAAC /* FreeroomsAssessment */,
