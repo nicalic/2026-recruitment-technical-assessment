@@ -23,9 +23,12 @@ public class BuildingLoader {
     }
     
     public func fetchBuildings() async -> Result  {
+        // Await for async result
         let result = await client.get(from: url)
 
+        // Result enum has success and failure
         switch result {
+        // Successful result is a tuple (data, response)
         case .success(let (data, response)):
 
             if response.statusCode != 200 {
