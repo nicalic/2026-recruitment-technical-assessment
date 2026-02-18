@@ -15,8 +15,9 @@ struct SearchBar: View {
             Spacer()
         }
         .padding(12)
-        .background(.ultraThinMaterial)
-        .cornerRadius(14)
+        .background(.white)
+        .clipShape(Capsule())
+        .opacity(0.5)
     }
 }
 
