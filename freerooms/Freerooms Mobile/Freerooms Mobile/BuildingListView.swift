@@ -8,15 +8,27 @@
 import SwiftUI
 
 struct BuildingListView: View {
+    var building: Building
+    
     var body: some View {
         HStack(spacing: 16) {
-            Image("K-B16").resizable().frame(width: 96, height: 72)
+            Image(building.id)
+                .resizable()
+                .frame(width: 96, height: 72)
                 .cornerRadius(8)
+            
             VStack(alignment: .leading, spacing: 8) {
-                Text("AGSM").font(.headline).fontWeight(.bold)
-                Text("9 rooms available").fontWeight(.light)
+                Text(building.name)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                
+                Text("0 rooms available")
+                    .font(.subheadline)
+                    .fontWeight(.light)
             }
+            
             Spacer()
+            
             HStack(spacing: 2) {
                 Text("0")
 
@@ -24,10 +36,12 @@ struct BuildingListView: View {
                     .foregroundStyle(.yellow)
                     .font(.system(size: 18))
             }
+            
+            Image(systemName: "chevron.right")
         }
     }
 }
 
 #Preview {
-    BuildingListView()
+    BuildingListView(building: buildings[0])
 }
