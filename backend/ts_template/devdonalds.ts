@@ -45,28 +45,36 @@ app.post("/parse", (req:Request, res:Response) => {
 // [TASK 1] ====================================================================
 // Takes in a recipeName and returns it in a form that 
 const parse_handwriting = (recipeName: string): string | null => {
+  // g -> global flag, i -> ignore case flag
   let name = recipeName.replace(/[-_]+/g, ' ').replace(/[^a-z\s]/gi, '');
   
+  // trim whitespace and split into words by whitespaces
   let words = name.trim().split(/\s+/g);
+
+  // transform each word to title case
   words = words.map(w => w.slice(0, 1).toUpperCase() + w.slice(1).toLowerCase());
   name = words.join(' ');
 
+  // return null if no words left
   return name.length > 0 ? name : null;
 }
 
 // [TASK 2] ====================================================================
 // Endpoint that adds a CookbookEntry to your magical cookbook
 app.post("/entry", (req:Request, res:Response) => {
+  // destructure fields from request body
   const { type, name, requiredItems, cookTime } = req.body;
 
   try {
     res.json(addEntry(type, name, requiredItems, cookTime));
   } catch(err) {
+    // log error message to console
     console.log(err.message);
     res.status(400).json({});
   }
 });
 
+// Adds an entry to the cookbook after error checks and processing.
 const addEntry = (type: string, name: string, requiredItems: requiredItem[] = [],
                   cookTime: number = -1) => {
   if (type !== "recipe" && type !== "ingredient") {
@@ -114,17 +122,22 @@ app.get("/summary", (req:Request, res:Request) => {
   }
 });
 
+// Reduces recipe down to name, cooktime and a list of ingredients.
 const summariseRecipe = (name: string) => {
   const result = { name, cookTime: 0, ingredients: [] as requiredItem[] };
 
-  const addToSummary = (name: string, quantity: number, first: boolean = false) => {
+  // recursively add ingredients to result
+  const addToSummary = (name: string, quantity: number, root: boolean = false) => {
     const entry = cookbook.find(e => e.name === name);
+    // Array.find() returns undefined if not found
     if (entry === undefined) {
       throw new Error("Recipe or ingredient not in the cookbook.");
     }
 
     if ("cookTime" in entry) {
-      if (first) throw new Error("searched name is NOT a recipe name");
+      // root name searched has to be a recipe
+      if (root) throw new Error("searched name is NOT a recipe name");
+
       result.ingredients.push({ name, quantity });
       result.cookTime += entry.cookTime * quantity;
     } else {
