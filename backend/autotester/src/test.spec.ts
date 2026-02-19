@@ -18,6 +18,18 @@ describe("Task 1", () => {
       expect(response.body).toStrictEqual({ msg: "Alpha Alfredo" });
     });
 
+    // test for multiple whitespaces (including trailing and leading)
+    it("white space example", async () => {
+      const response = await getTask1("   Skibidi___Spaghetti  ");
+      expect(response.body).toStrictEqual({ msg: "Skibidi Spaghetti" });
+    });
+
+    // test for zero length (null)
+    it("null example", async () => {
+      const response = await getTask1("__1234--(!)  ");
+      expect(response.status).toBe(400);
+    })
+
     it("error case", async () => {
       const response = await getTask1("");
       expect(response.status).toBe(400);
@@ -89,9 +101,23 @@ describe("Task 2", () => {
       const resp3 = await putTask2({
         type: "recipe",
         name: "Beef",
-        cookTime: 8,
+        requiredItems: [],
       });
       expect(resp3.status).toBe(400);
+    });
+
+    // test for one element per name in requiredItems
+    it("One element per name in requiredItems", async () => {
+      const resp = await putTask2({
+        type: "recipe",
+        name: "Burger",
+        requiredItems: [
+          { name: "Beef", quantity: 1 },
+          { name: "Lettuce", quantity: 1 },
+          { name: "Beef", quantity: 3 }
+        ]
+      });
+      expect(resp.status).toBe(400);
     });
   });
 });
@@ -138,6 +164,37 @@ describe("Task 3", () => {
       expect(resp2.status).toBe(400);
     });
 
+    // Ingredients exist in cookbook, but one missing ingredient
+    it("Search cookbook for missing item", async () => {
+      const resp1 = await postEntry({
+        type: "recipe",
+        name: "Sandwich",
+        requiredItems: [
+          { name: "Chicken", quantity: 1 },
+          { name: "Spinach", quantity: 1 },
+          { name: "Bun", quantity: 2 }
+        ]
+      });
+      expect(resp1.status).toBe(200);
+
+      const resp2 = await postEntry({
+        type: "ingredient",
+        name: "Chicken",
+        cookTime: 5
+      });
+      expect(resp2.status).toBe(200);
+
+      const resp3 = await postEntry({
+        type: "ingredient",
+        name: "Spinach",
+        cookTime: 2
+      });
+      expect(resp3.status).toBe(200);
+
+      const resp4 = await getTask3("Sandwich");
+      expect(resp4.status).toBe(400);
+    });
+
     it("Bro cooked", async () => {
       const meatball = {
         type: "recipe",
@@ -156,6 +213,58 @@ describe("Task 3", () => {
 
       const resp3 = await getTask3("Skibidi");
       expect(resp3.status).toBe(200);
+    });
+
+    // test returned object matches spec
+    it("Correct result", async () => {
+      const resp1 = await postEntry({
+        type: "recipe",
+        name: "Burger",
+        requiredItems: [
+          { name: "Patty", quantity: 1 },
+          { name: "Lettuce", quantity: 1 },
+          { name: "Bun", quantity: 2 }
+        ]
+      });
+      expect(resp1.status).toBe(200);
+
+      const resp2 = await postEntry({
+        type: "ingredient",
+        name: "Bun",
+        cookTime: 4
+      });
+      expect(resp2.status).toBe(200);
+
+      const resp3 = await postEntry({
+        type: "recipe",
+        name: "Patty",
+        requiredItems: [
+          { name: "Chicken", quantity: 3 }
+        ]
+      });
+      expect(resp3.status).toBe(200);
+
+      const finalResp = await getTask3("Burger");
+      expect(finalResp.status).toBe(200);
+      //.toStrictEqual does not check array order! See jest docs
+      expect(finalResp.body).toStrictEqual({
+        "name": "Burger",
+        "cookTime": 24,
+        "ingredients": [
+          {
+            "name": "Chicken",
+            "quantity": 3
+          },
+          {
+            "name": "Lettuce",
+            "quantity": 1
+          },
+          {
+            "name": "Bun",
+            "quantity": 2
+          }
+        ]
+      });
     });
   });
 });
