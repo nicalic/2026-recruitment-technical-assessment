@@ -34,10 +34,9 @@ struct AppView: View {
             }
             .padding(.horizontal)
             .foregroundStyle(.text)
-            .ignoresSafeArea(.container, edges: .bottom)
             
-            TabBar().opacity(0.95)
-        }
+            TabBar().opacity(0.95).padding(.bottom, 16)
+        }.edgesIgnoringSafeArea(.bottom)
     }
 }
 
