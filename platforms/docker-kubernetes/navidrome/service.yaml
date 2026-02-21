@@ -8,3 +8,4 @@ spec:
   ports:
   - port: 4533
     targetPort: 4533
+  type: LoadBalancer
