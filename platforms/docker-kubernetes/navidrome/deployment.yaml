@@ -23,3 +23,10 @@ spec:
             memory: "512Mi"
         ports:
           - containerPort: 4533
+        volumeMounts:
+          - name: data
+            mountPath: "/data"
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: navidrome-pv-claim
