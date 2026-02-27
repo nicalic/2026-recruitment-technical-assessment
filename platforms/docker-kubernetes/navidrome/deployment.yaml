@@ -23,3 +23,15 @@ spec:
             memory: "512Mi"
         ports:
           - containerPort: 4533
+        volumeMounts:
+          - name: data
+            mountPath: "/data"
+          - name: music
+            mountPath: "/music"
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: navidrome-pv-claim
+      - name: music
+        hostPath:
+          path: "/mnt/music"
