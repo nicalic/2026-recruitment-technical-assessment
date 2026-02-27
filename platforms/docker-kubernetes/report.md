@@ -18,7 +18,7 @@ Challenges face:
 
 ## Kubernetes
 
-Standard deployment on port 4533, with LoadBalancer service. No persistent volumes implemented.
+Standard deployment on port 4533, with LoadBalancer service and persistent data and music folder.
 
 A challenge I faced was when using the default service ClusterIP, I couldn't access the service from localhost as the IP address only belonged to the cluster. 
 
